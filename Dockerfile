@@ -9,6 +9,7 @@ WORKDIR /home/working-dir
 # RUN pip install ...
 RUN pip install pydantic Jinja2 jupyterlab
 RUN pip install openai
+RUN pip install beautifulsoup4
 
 #RUN mkdir /home/working-dir
 

@@ -1,6 +1,6 @@
 [project]
-name = "prompt_egineering"
-description = "Open_ai GPT prompt egineering"
+name = "prompt_engineering"
+description = "Open_ai GPT prompt engineering"
 version = "0.1.0"
 authors = [
     { name = "Roberto Serra", email = "obi.serra@gmail.com" }

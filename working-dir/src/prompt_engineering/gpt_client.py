@@ -1,6 +1,6 @@
 from openai import OpenAI
-from prompt_egineering.prompts import Prompt, SystemPrompt
-from prompt_egineering.response_models import GptResponse
+from prompt_engineering.prompts import Prompt, SystemPrompt
+from prompt_engineering.response_models import GptResponse
 
 
 class GptClient:
