@@ -1,0 +1,1 @@
+rename this key.txt and replace this text with your OpenAi Api Key

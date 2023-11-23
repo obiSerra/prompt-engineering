@@ -1,41 +1,29 @@
-# Docker Environment for ML
+# Prompt Engineering Playground
 
+This project has been inspired by the talk [Pydantic is all you need: Jason Liu](https://www.youtube.com/watch?v=yj-wSRJwrrc)
 
-This is a boilerplate repository for my docker environments for ML.
+The goal is to experiment with `Pydantic` and `OpenAI` APIs to implement complex prompt engineering patterns. 
 
-## Usage
-
-Build and run a docker container with a specific ML setup.
-Use the `working-dir` folder to mount your project folder into the docker container.
-
-### Setup
+## Setup
 
 Clone or fork this repository.
 
-1. Update the `Dockerfile` according to your project needs.
-2. Create a `.env` file using the `env_config-SAMPLE` as a template.
+1. Create a `.env` file using the `env_config-SAMPLE` as a template.
+2. Rename the `SAMPLE-key.txt` files to `key.txt` and add your API key.
 
-### Build
+## Build
 
 ```
 $ ./build.sh
 ```
 
-#### Manual Build
+## Run
 
 ```
-$ docker build -t <docker-build-name>  .
+$ ./run.sh <command>
 ```
 
-### Run
-
+Eg:
 ```
-$ ./run.sh
+$ ./run.sh python -m prompt_engineering
 ```
-
-#### Manual Run
-```
-$ docker run -p 8888:8888 -v ./working-dir:/home/jovyan/working-dir <docker-build-name>
-```
-
-
