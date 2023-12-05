@@ -1,6 +1,6 @@
 # Prompt Engineering Playground
 
-This project has been inspired by the talk [Pydantic is all you need: Jason Liu](https://www.youtube.com/watch?v=yj-wSRJwrrc)
+This project was inspired by the talk [Pydantic is all you need: Jason Liu](https://www.youtube.com/watch?v=yj-wSRJwrrc)
 
 The goal is to experiment with `Pydantic` and `OpenAI` APIs to implement complex prompt engineering patterns. 
 

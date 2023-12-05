@@ -9,19 +9,20 @@ class GptClient:
 
         self.model = model
 
-        # defaults to os.environ.get("OPENAI_API_KEY")
         self.client = OpenAI(
             api_key=api_key,
         )
 
-    def complete(self, prompt: Prompt, system_prompt: SystemPrompt = None):
-        messages = []
+    def complete(self, prompt: Prompt, system_prompt: SystemPrompt = None, new_context=True):
+        if new_context:
+            self.messages = []
 
         if system_prompt:
-            messages.append(dict(system_prompt))
-        messages.append(dict(prompt))
+            self.messages.append(dict(system_prompt))
+
+        self.messages.append(dict(prompt))
         resp = self.client.chat.completions.create(
-            messages=messages,
+            messages=self.messages,
             model=self.model,
         )
 

@@ -42,3 +42,26 @@ class GptResponse(BaseModel):
 
     def __str__(self):
         return self.choices[0].message.content
+
+
+class Point(BaseModel):
+    point: str = Field(..., title="Point", description="The point from the article")
+    quote: str = Field(..., title="Quote", description="The quote from the article")
+
+
+class QuoteResponse(BaseModel):
+    points: list[Point] = Field(..., title="Points", description="The points from the article")
+
+    def __str__(self):
+        s = ""
+
+        for i, p in enumerate(self.points):
+            s += f"{i+1}) {p.point}\n   (quote): {p.quote}\n"
+        return s
+
+
+class SummaryResponse(BaseModel):
+    summary: str = Field(..., title="Summary", description="The summary of the article")
+
+    def __str__(self):
+        return self.summary

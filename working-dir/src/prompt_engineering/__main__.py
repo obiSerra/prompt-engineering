@@ -1,45 +1,54 @@
 from prompt_engineering.gpt_client import GptClient
 from prompt_engineering.prompts import Prompt
-import requests
+from prompt_engineering.utils import get_page_content
+from prompt_engineering.response_models import QuoteResponse, SummaryResponse
+import json
 
-from bs4 import BeautifulSoup
+
 
 # TODO validate quotes and parse response
 # TODO add chain of thought
 
 
-def get_page_content(url):
-    r = requests.get(url)
-    soup = BeautifulSoup(r.text, "html.parser")
-    for script in soup.find_all("script"):
-        script.decompose()
-    for svg in soup.find_all("svg"):
-        svg.decompose()
-    for foot in soup.find_all("footer"):
-        foot.decompose()
-    # soup.script.decompose()
-    # soup.style.decompose()
-    # soup.img.decompose()
-    return soup.find("body").text
-
-
 if __name__ == "__main__":
     # TODO get url from user
     url = "https://stackoverflow.blog/2019/09/30/how-to-make-good-code-reviews-better/"
+
     page_content = get_page_content(url)
 
     client = GptClient()
 
     # TODO improve system prompt
     system_prompt = Prompt(
-        content="""Your task is to extract information and summarize a text.
-                Reply with a short summary and a list of the five most important points"""
+        content="""# MISSION
+        Retrieve all the information from the provided sources.
+        Do not add any information that is not in the sources.
+        """
     )
 
     user_prompt = Prompt(
-        content=f"""Given the following article, write a short summary of it and a list of the five most important points.
-        For each point quote the relevant text from the article.
-        \n\n```{page_content}```\n\n"""
+        content=f"""Given the following article, write a list of the most important points in the article.
+        For each point add a relevant quote from the article.
+        Format the answer as JSON following this structure {{\n"points": [{{\n"point": ...,"quote": ...}},\n...\n]\n}}'
+        \n\n{url}\n"""
+    )
+    resp = client.complete(user_prompt, system_prompt=system_prompt)
+
+    quote_resp = QuoteResponse(**json.loads(f"{resp}"))
+
+    second_step_prompt = Prompt(
+        content="""Starting from the list of points and quotes, write a summary of the article.
+                                Format the answer as JSON following this structure {{\n"summary": ...\n}}"""
     )
 
-    print(client.complete(user_prompt, system_prompt=system_prompt))
+    resp = client.complete(second_step_prompt, new_context=False)
+
+    summary_resp = SummaryResponse(**json.loads(f"{resp}"))
+
+    print(
+        f"""Summary:
+{summary_resp}
+
+Points and quotes:
+{quote_resp}"""
+    )
