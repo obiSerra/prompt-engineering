@@ -1,3 +1,4 @@
+import re
 from pydantic import BaseModel, Field, root_validator
 
 
@@ -65,3 +66,16 @@ class SummaryResponse(BaseModel):
 
     def __str__(self):
         return self.summary
+
+
+class DocumentResponse(GptResponse):
+    original_content: str = Field(..., title="Original Content", description="The original content of the document")
+
+    def __str__(self):
+        content = re.sub(r"\s+\(Key Point \d+\)", "", self.choices[0].message.content, flags=re.IGNORECASE)
+        return content + "\n\n\n" + self.original_content
+
+    @root_validator(pre=True)
+    def load_response(cls, values):
+        values["original_content"] = values["choices"][0]["message"]["content"]
+        return values
