@@ -1,5 +1,6 @@
 import requests
 import json
+import jinja2
 
 from bs4 import BeautifulSoup
 
@@ -22,3 +23,12 @@ def get_page_content(url):
     for foot in soup.find_all("footer"):
         foot.decompose()
     return soup.find("body").text
+
+
+def load_template(template_file, args={}):
+    templateLoader = jinja2.FileSystemLoader(searchpath="./templates/")
+    templateEnv = jinja2.Environment(loader=templateLoader)
+    template = templateEnv.get_template(template_file)
+    outputText = template.render(**args)
+
+    return outputText

@@ -3,10 +3,11 @@ import re
 
 from pydantic import BaseModel, Field
 from prompt_engineering.gpt_client import GptClient
-from prompt_engineering.prompts import DocumentPrompt, Prompt
-from prompt_engineering.utils import get_page_content
+from prompt_engineering.prompts import Prompt
+from prompt_engineering.utils import get_page_content, load_template
 from prompt_engineering.response_models import DocumentResponse, QuoteResponse, SummaryResponse
 import json
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -56,26 +57,21 @@ Points and quotes:
     )
 
 
-def gen_document():
+# def gen_document(key_points, tone="objective", style="Wikipedia Article", section="Article"):
+def gen_document(prompt: str):
     client = GptClient()
 
     # TODO improve system prompt
-    system_prompt = Prompt(
-        content="""You are an AI powered document generator. You will be given a list ok key points, a style, a tone and
-a section and will have to generate section of a document.
-Only use the key points provided, do not add any information that is not in the key points and
-after each sentence add a reference to the key point that inspired it as (Key Point n)."""
-    )
+    system_prompt = Prompt(content=load_template("doc_system_prompt.txt"))
 
-    key_points = []
-    doc = DocumentPrompt(
-        key_points=key_points,
-        tone="casual",
-        style="Event report",
-        section="Conclusion",
-    )
+    # doc = DocumentPrompt(
+    #     key_points=key_points,
+    #     tone=tone,
+    #     style=style,
+    #     section=section,
+    # )
 
-    user_prompt = Prompt(content=str(doc))
+    user_prompt = Prompt(content=prompt)
     resp = client.complete(user_prompt, system_prompt=system_prompt)
     doc_resp = DocumentResponse(**resp.model_dump())
     print(doc_resp)
@@ -87,4 +83,5 @@ after each sentence add a reference to the key point that inspired it as (Key Po
 
 if __name__ == "__main__":
     # scrape_page()
-    gen_document()
+    # gen_document()
+    print("Hello world")

@@ -42,7 +42,7 @@ class GptResponse(BaseModel):
         return values
 
     def __str__(self):
-        return self.choices[0].message.content
+        return self.choices[0].message.original_content
 
 
 class Point(BaseModel):
@@ -73,7 +73,7 @@ class DocumentResponse(GptResponse):
 
     def __str__(self):
         content = re.sub(r"\s+\(Key Point \d+\)", "", self.choices[0].message.content, flags=re.IGNORECASE)
-        return content + "\n\n\n" + self.original_content
+        return content
 
     @root_validator(pre=True)
     def load_response(cls, values):
