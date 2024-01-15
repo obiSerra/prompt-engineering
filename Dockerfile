@@ -7,9 +7,10 @@ WORKDIR /home/working-dir
 # -- Install dependencies
 
 # RUN pip install ...
-#RUN pip install pydantic Jinja2 jupyterlab
-#RUN pip install openai
-#RUN pip install beautifulsoup4
+RUN echo "Installing requirements..."
+RUN python -m pip install --upgrade pip
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
 #RUN mkdir /home/working-dir
 
