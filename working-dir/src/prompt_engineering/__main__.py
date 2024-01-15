@@ -1,13 +1,13 @@
+import json
 import logging
 import re
 
-from pydantic import BaseModel, Field
 from prompt_engineering.gpt_client import GptClient
 from prompt_engineering.prompts import Prompt
+from prompt_engineering.response_models import (DocumentResponse,
+                                                QuoteResponse, SummaryResponse)
 from prompt_engineering.utils import get_page_content, load_template
-from prompt_engineering.response_models import DocumentResponse, QuoteResponse, SummaryResponse
-import json
-
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

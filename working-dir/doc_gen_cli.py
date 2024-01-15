@@ -22,16 +22,9 @@ def gen_document_cli(**kwargs):
     print(gen_document(config))
 
 
-def gen_summary():
-    print("Generating summary not implemented yet")
-
-
 if __name__ == "__main__":
-    commands = {"generate-document": gen_document_cli, "generate-summary": gen_summary}
-
-    parser = argparse.ArgumentParser(description="ChatGPT CLI")
-    parser.add_argument("command", metavar="cmd", choices=list(commands.keys()), help="the command to run")
-    parser.add_argument("-c", "--config", metavar="config", help="the config file to use")
+    parser = argparse.ArgumentParser(description="ChatGPT CLI - Document Generation")
+    parser.add_argument("-i", "--input", metavar="input_file", help="The input file with the instructions")
 
     args = parser.parse_args()
-    commands[args.command](**vars(args))
+    gen_document[args.command](**vars(args))
