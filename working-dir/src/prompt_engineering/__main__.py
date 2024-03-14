@@ -3,7 +3,6 @@ import logging
 from prompt_engineering.gpt_client import GptClient
 from prompt_engineering.prompts import Prompt
 from prompt_engineering.response_models import DocumentResponse
-from prompt_engineering.utils import load_template
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -14,19 +13,17 @@ def gen_document(prompt: str):
     client = GptClient()
 
     # TODO improve system prompt
-    system_prompt = Prompt(content=load_template("doc_system_prompt.txt"))
+    # system_prompt = Prompt(content=load_template("doc_system_prompt.txt"))
 
-    # doc = DocumentPrompt(
-    #     key_points=key_points,
-    #     tone=tone,
-    #     style=style,
-    #     section=section,
-    # )
+    default_system_prompt = (
+        "Generate a text using the information provided; only generate the text without any additional information."
+    )
 
+    system_prompt = Prompt(content=default_system_prompt)
     user_prompt = Prompt(content=prompt)
     resp = client.complete(user_prompt, system_prompt=system_prompt)
     doc_resp = DocumentResponse(**resp.model_dump())
-    print(doc_resp)
+    print("\n\n" + doc_resp)
 
 
 # TODO validate quotes and parse response
@@ -34,6 +31,4 @@ def gen_document(prompt: str):
 
 
 if __name__ == "__main__":
-    # scrape_page()
-    # gen_document()
-    print("Hello world")
+    print("Please use the CLI.")

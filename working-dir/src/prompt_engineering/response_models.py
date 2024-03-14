@@ -18,6 +18,9 @@ class Choice(BaseModel):
 
         return values
 
+    def __str__(self) -> str:
+        return self.message.content
+
 
 class CompletionUsage(BaseModel):
     completion_tokens: int = Field(..., title="Completion Tokens", description="The number of tokens in the completion")
@@ -42,7 +45,7 @@ class GptResponse(BaseModel):
         return values
 
     def __str__(self):
-        return self.choices[0].message.original_content
+        return str(self.choices[0])
 
 
 class Point(BaseModel):

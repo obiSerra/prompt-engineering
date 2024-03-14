@@ -10,7 +10,6 @@ def gen_document_cli(input_file: str):
     print("Generating document...")
     with open(input_file, "r") as f:
         config = f.read()
-
     print(gen_document(config))
 
 
@@ -19,4 +18,7 @@ if __name__ == "__main__":
     parser.add_argument("input_file", help="The input file with the instructions")
 
     args = parser.parse_args()
-    # gen_document(**vars(args))
+
+    input_file = args.input_file.replace("working-dir", ".")
+
+    gen_document_cli(input_file)
